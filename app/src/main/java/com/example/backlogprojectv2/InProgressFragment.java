@@ -1,2 +1,4 @@
-package com.example.backlogprojectv2;public class InProgressFragment {
+package com.example.backlogprojectv2;
+
+public class InProgressFragment {
 }
