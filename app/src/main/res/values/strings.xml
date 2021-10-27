@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BackLogProjectV2</string>
+    <string name="buttonToDo">ToDo</string>
+    <string name="buttonInProgress">InProgress</string>
+    <string name="buttonDone">Done</string>
 </resources>

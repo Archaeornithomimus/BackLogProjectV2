@@ -1,4 +1,7 @@
 package com.example.backlogprojectv2;
 
-public class ToDoFragment {
+import android.app.Fragment;
+
+public class ToDoFragment extends Fragment {
+
 }
