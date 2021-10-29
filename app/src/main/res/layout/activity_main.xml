@@ -5,9 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <FrameLayout
+        android:id="@+id/fragmentDynamic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <Button
-        android:id="@+id/ToDo"
+        android:id="@+id/ButtonToDo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buttonToDo"
@@ -17,18 +22,18 @@
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <Button
-        android:id="@+id/InProgress"
+        android:id="@+id/ButtonInProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buttonInProgress"
         android:drawableLeft="@drawable/in_progress_logo"
         android:background="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/ToDo"
-        app:layout_constraintRight_toLeftOf="@id/Done"/>
+        app:layout_constraintLeft_toRightOf="@+id/ButtonToDo"
+        app:layout_constraintRight_toLeftOf="@id/ButtonDone"/>
 
     <Button
-        android:id="@+id/Done"
+        android:id="@+id/ButtonDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buttonDone"
