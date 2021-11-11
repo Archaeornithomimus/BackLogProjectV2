@@ -1,6 +1,7 @@
 package com.example.backlogprojectv2;
 
 public class Task {
+    private long id;
     private int poid;
     private String nom;
     private String personneAssigne;
@@ -55,25 +56,25 @@ public class Task {
         this.gte = gte;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     private String gte; // je sais plus ce que c'est exactement (je vois r sur la feuille)
-    private int id;
 
-    public Task(String nom, String etat, String dateDeFin, String personneAssigne, int poid, String gte){
-        this.dateDeFin =dateDeFin;
-        this.nom = nom;
+    public Task(long id,String nom, int poid, String personneAssigne,String etat, String dateDeFin){
+        this.id = id;
+        this.dateDeFin=dateDeFin;
+        this.nom=nom;
         this.etat=etat;
         this.gte=gte;
         this.poid=poid;
         this.personneAssigne=personneAssigne;
-    }
+        }
 
 
 
