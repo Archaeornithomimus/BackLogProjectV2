@@ -12,30 +12,33 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class DoneFragment extends Fragment {
-    private DatabaseHandler db = null;
+    DatabaseHandler db = null;
     TaskArrayAdapter taskArrayAdapter;
-    ArrayList<Task> taskArray = new ArrayList<>();
+    ArrayList<Task> taskArray;
+    ListView listView;
+    private Context context;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
         View view = inflater.inflate(R.layout.done_fragment, container, false);
-        ListView listView = view.findViewById(R.id.listeTachesDone);
-        taskArrayAdapter = new TaskArrayAdapter(getActivity(), R.layout.tasks_list, taskArray);
-        listView.setAdapter(taskArrayAdapter);
+        context = getActivity();
+        db = new DatabaseHandler(context);
+
+        listView = view.findViewById(R.id.listeTachesDone);
+        printList();
         //listView.setOnItemClickListener(this);
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.db = new DatabaseHandler(getActivity());
-        taskArray = db.getAllInProgressTask();
-        for (Task t:taskArray) {
-            taskArrayAdapter.add(t);
-        }
-        taskArrayAdapter.notifyDataSetChanged();
+    public void printList(){
+        taskArray = db.getAllDoneTask();
+        taskArrayAdapter = new TaskArrayAdapter(getActivity(), R.layout.tasks_list, taskArray);
+        listView.setAdapter(taskArrayAdapter);
+    }
+
+    public void updateList(){
 
     }
+
 
     @Override
     public void onDestroy() {
