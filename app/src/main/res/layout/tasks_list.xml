@@ -28,11 +28,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="PersonneAssigne"
+            android:paddingLeft="50sp"
             android:layout_weight="1"/>
 
         <TextView android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
+            android:paddingRight="100sp"
             android:id="@+id/poidTaskView"
             android:text="poid"/>
     </TableRow>

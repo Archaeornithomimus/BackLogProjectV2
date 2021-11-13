@@ -3,4 +3,9 @@
     <string name="buttonToDo">ToDo</string>
     <string name="buttonInProgress">InProgress</string>
     <string name="buttonDone">Done</string>
+    <string name="endDateLabel">Date supposée de fin: </string>
+    <string name="nobodyInChargeLabel">Personne n\'est responsable de cette task</string>
+    <string name="inChargeLabel2"> s\'en occupe</string>
+    <string name="inChargeLabel">Personne en charge actuellement: </string>
+    <string name="priorityNumberLabel">prioritée n°</string>
 </resources>

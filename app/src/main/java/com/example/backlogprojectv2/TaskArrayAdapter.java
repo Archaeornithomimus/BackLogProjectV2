@@ -1,12 +1,14 @@
 package com.example.backlogprojectv2;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class TaskArrayAdapter extends ArrayAdapter<Task> {
@@ -28,16 +30,39 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
             TextView nameTaskView = v.findViewById(R.id.nameTaskView);
             TextView poidTaskView = v.findViewById(R.id.poidTaskView);
             TextView personneAssigneTaskView = v.findViewById(R.id.personneAssigneTaskView);
+            TextView dateDeFinTaskView = v.findViewById(R.id.dateDeFinTaskView);
+            TextView etatTaskView = v.findViewById(R.id.etatTaskView);
+
 
             if(nameTaskView != null){
                 nameTaskView.setText(task.getNom()+" - n°"+task.getId());
             }
             if(poidTaskView != null){
-                poidTaskView.setText(String.valueOf(task.getPoid()));
+                poidTaskView.setText(String.valueOf(R.string.priorityNumberLabel +task.getPoid()));
             }
             if(personneAssigneTaskView != null){
-                personneAssigneTaskView.setText(task.getPersonneAssigne());
+                if (task.getPersonneAssigne() != "None") {
+                    personneAssigneTaskView.setText(R.string.inChargeLabel + task.getPersonneAssigne());
+
+                    // OU
+                    //personneAssigneTaskView.setText(task.getPersonneAssigne() + R.string.inChargeLabel2);
+                } else{
+                    personneAssigneTaskView.setText(R.string.nobodyInChargeLabel);
+                }
             }
+            if(etatTaskView != null){
+                etatTaskView.setText(task.getEtat());
+            }
+            if(dateDeFinTaskView != null){
+                dateDeFinTaskView.setText(R.string.endDateLabel + task.getDateDeFin());
+
+                Calendar calendar = Calendar.getInstance();
+                if(calendar.after(task.getDateDeFin())){
+                    dateDeFinTaskView.setTextColor(Color.RED);
+                }
+            }
+
+
         }
         return  v;
     }

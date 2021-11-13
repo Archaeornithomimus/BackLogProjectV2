@@ -31,8 +31,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE TeamMembers (id INTEGER PRIMARY KEY AUTOINCREMENT, prenom TEXT, nom TEXT, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
 
         // donnée test
-        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","12/09");
-        Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09");
+        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","12/09/2021");
+        Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09/2021");
         insertNewTask(task1);
         insertNewTask(task2);
 
