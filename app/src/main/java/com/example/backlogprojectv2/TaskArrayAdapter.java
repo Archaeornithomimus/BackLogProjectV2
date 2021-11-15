@@ -2,13 +2,16 @@ package com.example.backlogprojectv2;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TaskArrayAdapter extends ArrayAdapter<Task> {
@@ -38,28 +41,41 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
                 nameTaskView.setText(task.getNom()+" - n°"+task.getId());
             }
             if(poidTaskView != null){
-                poidTaskView.setText(String.valueOf(R.string.priorityNumberLabel +task.getPoid()));
+                poidTaskView.setText(getContext().getString(R.string.priorityNumberLabel) +task.getPoid());
             }
             if(personneAssigneTaskView != null){
                 if (task.getPersonneAssigne() != "None") {
-                    personneAssigneTaskView.setText(R.string.inChargeLabel + task.getPersonneAssigne());
+                    //String string = getContext().getString(R.string.inChargeLabel) + task.getPersonneAssigne();
+                    //personneAssigneTaskView.setText(string);
 
                     // OU
-                    //personneAssigneTaskView.setText(task.getPersonneAssigne() + R.string.inChargeLabel2);
+                    personneAssigneTaskView.setText(task.getPersonneAssigne() +" "+ getContext().getString(R.string.inChargeLabel2));
                 } else{
-                    personneAssigneTaskView.setText(R.string.nobodyInChargeLabel);
+                    personneAssigneTaskView.setText(getContext().getString(R.string.nobodyInChargeLabel));
                 }
             }
             if(etatTaskView != null){
                 etatTaskView.setText(task.getEtat());
             }
             if(dateDeFinTaskView != null){
-                dateDeFinTaskView.setText(R.string.endDateLabel + task.getDateDeFin());
+                dateDeFinTaskView.setText(getContext().getString(R.string.endDateLabel) +" "+ task.getDateDeFin());
 
-                Calendar calendar = Calendar.getInstance();
-                if(calendar.after(task.getDateDeFin())){
-                    dateDeFinTaskView.setTextColor(Color.RED);
+
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                try{
+                    Date date = format.parse(task.getDateDeFin());
+                    Date today = Calendar.getInstance().getTime();
+                    if(today.after(date) == true){
+                        dateDeFinTaskView.setTextColor(Color.RED);
+                    } else {
+                        dateDeFinTaskView.setTextColor(Color.GREEN);
+                    }
+                } catch (ParseException e){
+                    Log.d("Parse Error",e.getMessage());
                 }
+
+
+
             }
 
 
