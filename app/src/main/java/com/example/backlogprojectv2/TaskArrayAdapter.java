@@ -65,20 +65,15 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
                 try{
                     Date date = format.parse(task.getDateDeFin());
                     Date today = Calendar.getInstance().getTime();
-                    if(today.after(date) == true){
-                        dateDeFinTaskView.setTextColor(Color.RED);
+                    if(today.after(date)){
+                        dateDeFinTaskView.setTextColor(Color.argb(255,100,0,0));
                     } else {
-                        dateDeFinTaskView.setTextColor(Color.GREEN);
+                        dateDeFinTaskView.setTextColor(Color.argb(255,0,100,0));
                     }
                 } catch (ParseException e){
                     Log.d("Parse Error",e.getMessage());
                 }
-
-
-
             }
-
-
         }
         return  v;
     }

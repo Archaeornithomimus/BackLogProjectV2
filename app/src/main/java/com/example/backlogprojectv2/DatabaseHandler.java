@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,2);
+        super(context,"backlogprojectv2",null,3);
         this.db = getWritableDatabase();
     }
 
@@ -31,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE TeamMembers (id INTEGER PRIMARY KEY AUTOINCREMENT, prenom TEXT, nom TEXT, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
 
         // donnée test
-        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","12/09/2021");
+        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","31/11/2021");
         Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09/2021");
         insertNewTask(task1);
         insertNewTask(task2);
