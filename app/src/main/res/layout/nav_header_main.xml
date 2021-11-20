@@ -9,7 +9,7 @@
     android:paddingTop= "40dp"
     android:paddingRight= "20dp"
     android:paddingBottom= "12dp"
-    android:theme= "@style/ThemeOverlay.AppCompat.Dark" >
+    >
     <ImageView
         android:id= "@+id/imageView"
         android:layout_width= "wrap_content"
@@ -21,8 +21,11 @@
         android:layout_height= "wrap_content"
         android:paddingTop= "12dp"
         android:textAppearance= "@style/TextAppearance.AppCompat.Body1" />
-    <TextView
-        android:id= "@+id/textView"
+    <ImageView
+        android:id= "@+id/addTask"
         android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"/>
+        android:layout_height= "wrap_content"
+        android:paddingTop= "12dp"
+        app:srcCompat= "@drawable/icons_add_task"/>
+
 </LinearLayout>

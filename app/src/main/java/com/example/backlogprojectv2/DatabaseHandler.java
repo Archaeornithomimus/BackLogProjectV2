@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -14,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,3);
+        super(context,"backlogprojectv2",null,5);
         this.db = getWritableDatabase();
     }
 
@@ -25,14 +26,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         this.db = db;
-        db.execSQL("CREATE TABLE TaskToDo (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
-        db.execSQL("CREATE TABLE TaskDone (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
-        db.execSQL("CREATE TABLE TaskInProgress (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
-        db.execSQL("CREATE TABLE TeamMembers (id INTEGER PRIMARY KEY AUTOINCREMENT, prenom TEXT, nom TEXT, personneAssigne TEXT, etat TEXT, dateDeFin TEXT);");
+        db.execSQL("CREATE TABLE TaskToDo (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
+        db.execSQL("CREATE TABLE TaskDone (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
+        db.execSQL("CREATE TABLE TaskInProgress (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
+        db.execSQL("CREATE TABLE TeamMembers (id INTEGER PRIMARY KEY AUTOINCREMENT, prenom TEXT, nom TEXT);");
+
 
         // donnée test
-        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","31/11/2021");
-        Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09/2021");
+        Task task1 = new Task(2,"Lancement",12,"Bob","ToDo","31/11/2021","c'est quand tu lance le projet");
+        Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09/2021","c'est quand tu écris le code");
         insertNewTask(task1);
         insertNewTask(task2);
 
@@ -52,6 +54,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("personneAssigne",t.getPersonneAssigne());
         values.put("etat",t.getEtat());
         values.put("dateDeFin",t.getDateDeFin());
+        values.put("description",t.getDescription());
         switch (t.getEtat()){
             case "InProgress":
                 db.insert("TaskInProgress",null,values);
@@ -60,6 +63,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             default:
                 db.insert("TaskToDo",null,values);
         }
+    }
+
+    public void insertNewTeamMember(TeamMember teamMember){
+        ContentValues values = new ContentValues();
+        values.put("nom",teamMember.getName());
+        values.put("prenom",teamMember.getFirstname());
+        values.put("id",teamMember.getId());
     }
 
     public void passTaskToInProgress(Task taskToSwitch){
@@ -72,6 +82,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 values.put("personneAssigne",taskToSwitch.getPersonneAssigne());
                 values.put("etat","InProgress");
                 values.put("dateDeFin",taskToSwitch.getDateDeFin());
+                values.put("description",taskToSwitch.getDescription());
                 db.insert("TaskInProgress",null,values);
             case "Done":
                 db.delete("TaskDone","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
@@ -80,6 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 values.put("personneAssigne",taskToSwitch.getPersonneAssigne());
                 values.put("etat","InProgress");
                 values.put("dateDeFin",taskToSwitch.getDateDeFin());
+                values.put("description",taskToSwitch.getDescription());
                 db.insert("TaskInProgress",null,values);
             default:
                 // already in InProgress Table
@@ -96,6 +108,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 values.put("personneAssigne",taskToSwitch.getPersonneAssigne());
                 values.put("etat","Done");
                 values.put("dateDeFin",taskToSwitch.getDateDeFin());
+                values.put("description",taskToSwitch.getDescription());
                 db.insert("TaskDone",null,values);
             case "InProgress":
                 db.delete("TaskInProgress","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
@@ -104,6 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 values.put("personneAssigne",taskToSwitch.getPersonneAssigne());
                 values.put("etat","Done");
                 values.put("dateDeFin",taskToSwitch.getDateDeFin());
+                values.put("description",taskToSwitch.getDescription());
                 db.insert("TaskDone",null,values);
             default:
                 // already in Done Table
@@ -122,12 +136,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public ArrayList<TeamMember> getAllMembers(){
+        ArrayList<TeamMember> membersList = new ArrayList<TeamMember>();
+        Cursor c = db.rawQuery("SELECT * FROM TeamMembers;",null);
+        c.moveToFirst();
+        while (c.moveToNext()){
+            TeamMember teamMember = new TeamMember(c.getLong(0),c.getString(1),c.getString(2));
+            membersList.add(teamMember);
+        }
+        c.close();
+        return membersList;
+    }
+
     public ArrayList<Task> getAllInProgressTask(){
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskInProgress;",null);
         c.moveToFirst();
         while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5));
+            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
         c.close();
@@ -138,7 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskToDo;",null);
         while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5));
+            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
         c.close();
@@ -149,14 +175,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskDone;",null);
         while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5));
+            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
         c.close();
         return taches;
     }
-
-
-
 
 }

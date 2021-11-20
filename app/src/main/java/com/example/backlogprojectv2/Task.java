@@ -7,6 +7,15 @@ public class Task {
     private String personneAssigne;
     private String etat;
     private String dateDeFin;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public int getPoid() {
         return poid;
@@ -66,7 +75,7 @@ public class Task {
 
     private String gte; // je sais plus ce que c'est exactement (je vois r sur la feuille)
 
-    public Task(long id,String nom, int poid, String personneAssigne,String etat, String dateDeFin){
+    public Task(long id,String nom, int poid, String personneAssigne,String etat, String dateDeFin,String description){
         this.id = id;
         this.dateDeFin=dateDeFin;
         this.nom=nom;
@@ -74,6 +83,7 @@ public class Task {
         this.gte=gte;
         this.poid=poid;
         this.personneAssigne=personneAssigne;
+        this.description=description;
         }
 
 

@@ -36,10 +36,6 @@ public class InProgressFragment extends Fragment {
         listView.setAdapter(taskArrayAdapter);
     }
 
-    public void updateList(){
-
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

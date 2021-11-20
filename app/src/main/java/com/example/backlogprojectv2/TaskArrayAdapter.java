@@ -34,7 +34,6 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
             TextView poidTaskView = v.findViewById(R.id.poidTaskView);
             TextView personneAssigneTaskView = v.findViewById(R.id.personneAssigneTaskView);
             TextView dateDeFinTaskView = v.findViewById(R.id.dateDeFinTaskView);
-            TextView etatTaskView = v.findViewById(R.id.etatTaskView);
 
 
             if(nameTaskView != null){
@@ -53,9 +52,6 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
                 } else{
                     personneAssigneTaskView.setText(getContext().getString(R.string.nobodyInChargeLabel));
                 }
-            }
-            if(etatTaskView != null){
-                etatTaskView.setText(task.getEtat());
             }
             if(dateDeFinTaskView != null){
                 dateDeFinTaskView.setText(getContext().getString(R.string.endDateLabel) +" "+ task.getDateDeFin());
