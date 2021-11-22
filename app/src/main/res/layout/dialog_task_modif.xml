@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="dev"
         app:layout_constraintTop_toBottomOf="@+id/textViewTaskName" />
 
     <TextView
@@ -30,11 +29,33 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTaskName"
         tools:layout_editor_absoluteX="0dp">
 
-        <TextView
-            android:id="@+id/textViewPersonInCharge"
+
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Personne en charge :" />
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewPersonInCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personne en charge :" />
+
+            <Spinner
+                android:id="@+id/spinnerPersonInCharge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewTaskPriority"
@@ -49,11 +70,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <Spinner
-            android:id="@+id/spinnerPersonInCharge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/editTextTaskPriority"
@@ -110,7 +126,6 @@
         android:layout_height="137dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

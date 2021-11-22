@@ -7,17 +7,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ToDoFragment toDoFragment = new ToDoFragment();
         transaction.add(R.id.fragmentDynamic,toDoFragment);
         transaction.commit();
+
 
         Button toDoButton = findViewById(R.id.ButtonToDo);
         toDoButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +82,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+    public void addNewTask(View view) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        View mView = LayoutInflater.from(this).inflate(R.layout.dialog_task_modif, null);
+
+        EditText name = (EditText) mView.findViewById(R.id.editTextTaskName);
+        EditText priority = (EditText) mView.findViewById(R.id.editTextTaskPriority);
+        EditText endDate = (EditText) mView.findViewById(R.id.editTextTaskEndDate);
+        EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
+        Spinner etat = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+        Spinner personInCharge = (Spinner) mView.findViewById(R.id.spinnerPersonInCharge);
+        name.clearComposingText();
+        priority.clearComposingText();
+        endDate.clearComposingText();
+        description.clearComposingText();
+
+
+        Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
+        Button btnCancel = (Button) mView.findViewById(R.id.cancelTaskModifButton);
+        alert.setView(mView);
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+
+        btnValidate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
     /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

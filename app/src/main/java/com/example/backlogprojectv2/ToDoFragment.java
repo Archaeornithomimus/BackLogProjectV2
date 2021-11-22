@@ -33,8 +33,6 @@ public class ToDoFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listeTachesToDo);
         printListTask();
 
-
-
         return view;
     }
 
