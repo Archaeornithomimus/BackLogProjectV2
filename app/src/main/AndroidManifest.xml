@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".ActivityMembers"
-            android:exported="true">
+            android:exported="true"
+            android:theme= "@style/Theme.AppCompat.NoActionBar">
         </activity>
     </application>
 

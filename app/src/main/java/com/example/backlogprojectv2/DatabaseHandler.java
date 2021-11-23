@@ -37,7 +37,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Task task2 = new Task(1,"Dev",1,"Rogers","ToDo","31/09/2021","c'est quand tu écris le code");
         insertNewTask(task1);
         insertNewTask(task2);
-
+        insertNewTeamMember(new TeamMember(1,"Alice","tamere"));
+        insertNewTeamMember(new TeamMember(2,"Alice","tamere"));
         //Task task3 = new Task(3,"Dev","ToDo","31/09","Roger",2,"toot");
         //insertNewTask(task3);
         //passTaskToInProgress(task3);
@@ -70,6 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("nom",teamMember.getName());
         values.put("prenom",teamMember.getFirstname());
         values.put("id",teamMember.getId());
+        db.insert("TeamMembers",null,values);
     }
 
     public void passTaskToInProgress(Task taskToSwitch){
@@ -139,7 +141,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<TeamMember> getAllMembers(){
         ArrayList<TeamMember> membersList = new ArrayList<TeamMember>();
         Cursor c = db.rawQuery("SELECT * FROM TeamMembers;",null);
-        c.moveToFirst();
         while (c.moveToNext()){
             TeamMember teamMember = new TeamMember(c.getLong(0),c.getString(1),c.getString(2));
             membersList.add(teamMember);
@@ -151,7 +152,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Task> getAllInProgressTask(){
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskInProgress;",null);
-        c.moveToFirst();
         while (c.moveToNext()){
             Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),c.getString(3),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
