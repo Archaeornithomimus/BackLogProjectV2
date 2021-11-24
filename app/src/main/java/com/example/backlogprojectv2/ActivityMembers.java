@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.lang.reflect.Member;
@@ -31,8 +34,8 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
     private ArrayList<TeamMember> membersList;
     DatabaseHandler db = null;
     ListView listView;
+    FloatingActionButton deleteButton;
 
-    private Button buttonOpenDialog;
 
     @Override
     protected void  onCreate(Bundle savedInstanceState) {
@@ -49,56 +52,51 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(this);
 
-
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         db = new DatabaseHandler(this);
         printListMembers();
-
-        this.buttonOpenDialog = (Button) this.findViewById(R.id.addMembre);
-        this.buttonOpenDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_showMessage(v);
-            }
-        });
     }
 
-    public void btn_showMessage(View view) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(ActivityMembers.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_custom_members, null);
-        EditText fullName = (EditText) mView.findViewById(R.id.editTextPersonName);
-        Button btn_cancel = (Button) mView.findViewById(R.id.cancel_button);
-        Button btn_okay = (Button) mView.findViewById(R.id.validate_button);
+    public void addNew(View view) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        View mView = LayoutInflater.from(this).inflate(R.layout.dialog_custom_members, null);
+
+        EditText name = (EditText) mView.findViewById(R.id.editTextPersonName);
+        EditText firstname = (EditText) mView.findViewById(R.id.editTextPersonFirstname);
+
+        name.clearComposingText();
+        firstname.clearComposingText();
+        deleteButton = mView.findViewById(R.id.floatingActionButtonDelete);
+        deleteButton.hide();
+
+        Button btnValidate = (Button) mView.findViewById(R.id.validate_button);
+        Button btnCancel = (Button) mView.findViewById(R.id.cancel_button);
         alert.setView(mView);
         final AlertDialog alertDialog = alert.create();
         alertDialog.setCanceledOnTouchOutside(true);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+
+        btnValidate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
             }
         });
-        btn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = fullName.getText().toString();
-                if (name != null && !name.isEmpty()) {
-                    //monAdaptateur.add();
-                    monAdaptateur.notifyDataSetChanged();
-                    alertDialog.dismiss();
-                }
-            }
-        });
         alertDialog.show();
     }
+
     public void printListMembers(){
         membersList = new ArrayList<>();
         membersList = db.getAllMembers();
         this.monAdaptateur = new MemberArrayAdapter(
                 this, R.layout.team_member_list, membersList);
         listView.setAdapter(this.monAdaptateur);
-        //super.setListAdapter(this.monAdaptateur);
 
     }
     @Override

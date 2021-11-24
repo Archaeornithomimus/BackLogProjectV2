@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void addNewTask(View view) {
+    public void addNew(View view) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         View mView = LayoutInflater.from(this).inflate(R.layout.dialog_task_modif, null);
 
