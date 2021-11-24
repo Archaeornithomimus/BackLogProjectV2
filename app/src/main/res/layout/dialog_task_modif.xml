@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/textViewTaskName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nom de la tâche :"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <EditText
         android:id="@+id/editTextTaskName"
         android:layout_width="match_parent"
@@ -13,112 +21,96 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewTaskName" />
 
     <TextView
-        android:id="@+id/textViewTaskName"
+        android:id="@+id/textViewPersonInCharge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nom de la tâche :"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:text="Personne en charge :"
         app:layout_constraintTop_toBottomOf="@+id/editTextTaskName"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Spinner
+        android:id="@+id/spinnerPersonInCharge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTaskName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textViewPersonInCharge"/>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"></LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewPersonInCharge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Personne en charge :" />
-
-            <Spinner
-                android:id="@+id/spinnerPersonInCharge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTaskPriority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPersonInCharge"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
 
         <TextView
             android:id="@+id/textViewTaskPriority"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Priorité" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
+            android:text="Priorité : "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
         <EditText
             android:id="@+id/editTextTaskPriority"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </LinearLayout>
+            android:inputType="text"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewTaskPriority"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
+
+    <TextView
+        android:id="@+id/textViewTaskState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Etat : "
+        app:layout_constraintTop_toBottomOf="@id/layoutTaskPriority"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Spinner
+        android:id="@+id/spinnerTaskState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTaskPriority"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/textViewTaskState"/>
+
+    <TextView
+        android:id="@+id/textViewTaskEndDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        android:text="Date de fin : "
+        app:layout_constraintTop_toBottomOf="@+id/spinnerTaskState"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <TextView
-            android:id="@+id/textViewTaskState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Etat" />
-
-        <TextView
-            android:id="@+id/textViewTaskEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date de fin" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <EditText
+        android:id="@+id/editTextTaskEndDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp">
+        android:inputType="date"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTaskEndDate"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <Spinner
-            android:id="@+id/spinnerTaskState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/editTextTaskEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textViewTaskDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description :"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTaskEndDate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
+
 
     <EditText
         android:id="@+id/editTextDescription"
@@ -126,23 +118,13 @@
         android:layout_height="137dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTaskDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/textViewTaskDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.051" />
+
 
     <Button
         android:id="@+id/validateTasklModifButton"
@@ -150,10 +132,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Validate"
-        app:layout_constraintEnd_toStartOf="@+id/cancelTaskModifButton"
         app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cancelTaskModifButton"/>
 
     <Button
         android:id="@+id/cancelTaskModifButton"
@@ -161,9 +143,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.757"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/validateTasklModifButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
