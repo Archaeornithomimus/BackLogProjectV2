@@ -43,12 +43,12 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
                 poidTaskView.setText(getContext().getString(R.string.priorityNumberLabel) +task.getPoid());
             }
             if(personneAssigneTaskView != null){
-                if (task.getPersonneAssigne() != "None") {
+                if (task.getPersonneAssigne() != null) {
                     //String string = getContext().getString(R.string.inChargeLabel) + task.getPersonneAssigne();
                     //personneAssigneTaskView.setText(string);
 
                     // OU
-                    personneAssigneTaskView.setText(task.getPersonneAssigne() +" "+ getContext().getString(R.string.inChargeLabel2));
+                    personneAssigneTaskView.setText(task.getPersonneAssigne().getName() +" "+ task.getPersonneAssigne().getFirstname() +" "+  getContext().getString(R.string.inChargeLabel2));
                 } else{
                     personneAssigneTaskView.setText(getContext().getString(R.string.nobodyInChargeLabel));
                 }

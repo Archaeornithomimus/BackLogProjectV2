@@ -11,6 +11,11 @@ public class TeamMember {
         this.id = id;
     }
 
+    public TeamMember(String name, String firstname) {
+        this.firstname = firstname;
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }

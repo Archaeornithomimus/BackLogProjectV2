@@ -4,7 +4,7 @@ public class Task {
     private long id;
     private int poid;
     private String nom;
-    private String personneAssigne;
+    private TeamMember personneAssigne;
     private String etat;
     private String dateDeFin;
     private String description;
@@ -33,11 +33,11 @@ public class Task {
         this.nom = nom;
     }
 
-    public String getPersonneAssigne() {
+    public TeamMember getPersonneAssigne() {
         return personneAssigne;
     }
 
-    public void setPersonneAssigne(String personneAssigne) {
+    public void setPersonneAssigne(TeamMember personneAssigne) {
         this.personneAssigne = personneAssigne;
     }
 
@@ -57,14 +57,6 @@ public class Task {
         this.dateDeFin = dateDeFin;
     }
 
-    public String getGte() {
-        return gte;
-    }
-
-    public void setGte(String gte) {
-        this.gte = gte;
-    }
-
     public long getId() {
         return id;
     }
@@ -73,18 +65,24 @@ public class Task {
         this.id = id;
     }
 
-    private String gte; // je sais plus ce que c'est exactement (je vois r sur la feuille)
-
-    public Task(long id,String nom, int poid, String personneAssigne,String etat, String dateDeFin,String description){
+    public Task(long id,String nom, int poid, TeamMember personneAssigne,String etat, String dateDeFin,String description){
         this.id = id;
         this.dateDeFin=dateDeFin;
         this.nom=nom;
         this.etat=etat;
-        this.gte=gte;
         this.poid=poid;
         this.personneAssigne=personneAssigne;
         this.description=description;
         }
+
+    public Task(String nom, int poid, TeamMember personneAssigne,String etat, String dateDeFin,String description){
+        this.dateDeFin=dateDeFin;
+        this.nom=nom;
+        this.etat=etat;
+        this.poid=poid;
+        this.personneAssigne=personneAssigne;
+        this.description=description;
+    }
 
 
 

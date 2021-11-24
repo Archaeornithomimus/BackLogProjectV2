@@ -79,7 +79,7 @@ public class ToDoFragment extends Fragment {
         priority.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
         etat.setPrompt(task.getEtat());
-        personInCharge.setPrompt(task.getPersonneAssigne());
+        personInCharge.setPrompt(task.getPersonneAssigne().getName());
 
         description.setText(task.getDescription());
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
@@ -91,6 +91,7 @@ public class ToDoFragment extends Fragment {
         btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast.makeText(context,"modification svg",Toast.LENGTH_LONG);
             }
         });
@@ -124,35 +125,6 @@ public class ToDoFragment extends Fragment {
         });
         alertDialog.show();
     }
-
-    /*public void showTaskToDo(View view) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_custom_members, null);
-        EditText fullName = (EditText) mView.findViewById(R.id.editTextPersonName);
-        Button btn_cancel = (Button) mView.findViewById(R.id.cancel_button);
-        Button btn_okay = (Button) mView.findViewById(R.id.validate_button);
-        alert.setView(mView);
-        final AlertDialog alertDialog = alert.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        btn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = fullName.getText().toString();
-                if (name != null && !name.isEmpty()) {
-                    //monAdaptateur.add();
-                    monAdaptateur.notifyDataSetChanged();
-                    alertDialog.dismiss();
-                }
-            }
-        });
-        alertDialog.show();
-    }*/
 
     @Override
     public void onDestroy() {
