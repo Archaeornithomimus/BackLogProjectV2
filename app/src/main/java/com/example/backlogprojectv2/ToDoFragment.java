@@ -90,9 +90,10 @@ public class ToDoFragment extends Fragment {
         priority.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
         description.setText(task.getDescription());
-
+        int index = teamMemberArrayList.lastIndexOf(task.getPersonneAssigne());
+        personInCharge.setSelection(index);
         if (task.getPersonneAssigne()!=null) {
-            personInCharge.setSelection(teamMemberArrayList.indexOf(task.getPersonneAssigne()));
+
         }
 
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);

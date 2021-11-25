@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,14);
+        super(context,"backlogprojectv2",null,15);
         this.db = getWritableDatabase();
     }
 

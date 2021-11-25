@@ -43,4 +43,9 @@ public class TeamMember {
     public String getNameMember(){
         return this.name + " " + this.firstname;
     }
+
+    @Override
+    public String toString(){
+        return this.name + " " + this.firstname;
+    }
 }
