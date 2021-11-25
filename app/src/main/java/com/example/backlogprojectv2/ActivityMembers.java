@@ -181,6 +181,8 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.options) {
+            Intent intent = new Intent(this,DataBaseOption.class);
+            startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

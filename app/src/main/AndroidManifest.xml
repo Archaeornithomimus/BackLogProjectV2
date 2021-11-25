@@ -9,9 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BackLogProjectV2" >
-        <activity
-            android:name=".DataBaseOption"
-            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,6 +25,10 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
         </activity>
+        <activity
+            android:name=".DataBaseOption"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>
