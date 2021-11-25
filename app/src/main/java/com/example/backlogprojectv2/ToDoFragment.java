@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoFragment extends Fragment {
     DatabaseHandler db = null;
@@ -43,11 +45,8 @@ public class ToDoFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Task listItem = listView.getItemAtPosition(position);
-                //TextView v = (Task) view.findViewById(R.id.txtLstItem);
                 Task task = (Task)parent.getItemAtPosition(position);
                 showTaskToDoDescription(view,task);
-                Toast.makeText(context, "selected Item Name is " + task.getId(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -65,26 +64,37 @@ public class ToDoFragment extends Fragment {
         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
         View mView = LayoutInflater.from(context).inflate(R.layout.dialog_task_modif, null);
 
-
+        ArrayList<String> stateList = new ArrayList<>();
+        stateList.add("toDo");
+        stateList.add("InProgress");
+        stateList.add("Done");
 
         EditText name = (EditText) mView.findViewById(R.id.editTextTaskName);
         EditText priority = (EditText) mView.findViewById(R.id.editTextTaskPriority);
         EditText endDate = (EditText) mView.findViewById(R.id.editTextTaskEndDate);
         EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
 
-        Spinner etat = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+        Spinner state = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+        ArrayAdapter<String> adapterState = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,stateList);
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        state.setAdapter(adapterState);
+        state.setSelection(0);
 
         Spinner personInCharge = (Spinner) mView.findViewById(R.id.spinnerPersonInCharge);
+        ArrayList<TeamMember> teamMemberArrayList = db.getAllMembers();
+        ArrayAdapter<TeamMember> adapterPersonInCharge = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item,teamMemberArrayList);
+        adapterPersonInCharge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        personInCharge.setAdapter(adapterPersonInCharge);
 
         name.setText(task.getNom());
         priority.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
-        etat.setPrompt(task.getEtat());
+        description.setText(task.getDescription());
+
         if (task.getPersonneAssigne()!=null) {
-            //personInCharge.task.getPersonneAssigne().getName());
+            personInCharge.setSelection(teamMemberArrayList.indexOf(task.getPersonneAssigne()));
         }
 
-        description.setText(task.getDescription());
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
         Button btnCancel = (Button) mView.findViewById(R.id.cancelTaskModifButton);
         alert.setView(mView);
@@ -94,7 +104,24 @@ public class ToDoFragment extends Fragment {
         btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!name.getText().toString().isEmpty() && !priority.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
 
+                    String nameNew = name.getText().toString();
+                    String endDateNew  = endDate.getText().toString();
+                    int poidNew = Integer.parseInt(priority.getText().toString());
+                    String stateNew = state.getPrompt().toString();
+                    String descriptionNew = description.getText().toString();
+                    TeamMember personInChargeNew = (TeamMember) personInCharge.getSelectedItem();
+                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew);
+                    db.updateTask(task,newTask);
+                    taskArrayAdapter.remove(task);
+                    taskArrayAdapter.add(newTask);
+                    taskArrayAdapter.notifyDataSetChanged();
+
+                    alertDialog.dismiss();
+                } else{
+                    Toast.makeText(context,"Il faut remplir les champs",Toast.LENGTH_SHORT);
+                }
                 Toast.makeText(context,"modification svg",Toast.LENGTH_LONG);
             }
         });

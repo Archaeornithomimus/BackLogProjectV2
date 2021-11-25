@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,12);
+        super(context,"backlogprojectv2",null,14);
         this.db = getWritableDatabase();
     }
 
@@ -60,10 +60,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void cleanTable(){
-        db.rawQuery("DELETE FROM TaskToDo;",null);
-        db.rawQuery("DELETE FROM TaskDone;",null);
-        db.rawQuery("DELETE FROM TaskInProgress;",null);
-        db.rawQuery("DELETE FROM TeamMembers;",null);
+        db.execSQL("DELETE FROM TaskToDo;");
+        db.execSQL("DELETE FROM TaskDone;");
+        db.execSQL("DELETE FROM TaskInProgress;");
+        db.execSQL("DELETE FROM TeamMembers;");
     }
     //endregion Fin de section administration bdd
 
@@ -105,6 +105,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         c.close();
         return membersList;
     }
+
+    public ArrayList<String> getAllMembersName(){
+        ArrayList<String> teamMemberName = new ArrayList<>();
+        for (TeamMember teamMember:this.getAllMembers()
+        ) {
+            teamMemberName.add(teamMember.getName() + " " + teamMember.getFirstname());
+        }
+        return teamMemberName;
+    }
+
     public TeamMember getUniqueTeamMember(Long id){
         TeamMember teamMember = null;
         // d parce qu'on sait pas si ça ne surcharge pas le curseur c
@@ -151,6 +161,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return taches;
     }
     //endregion
+
+    public void updateTask(Task old, Task newTask){
+
+    }
 
     //region Changement d'état des taches
 
@@ -236,6 +250,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //region Suppression d'entrée dans les tables
     public void deleteMember(TeamMember teamMember){
         db.delete("TeamMembers","id = ?",new String[]{String.valueOf(teamMember.getId())});
+    }
+
+    public void deleteTask(Task task){
+        switch (task.getEtat()){
+            case "ToDo":
+                db.delete("TaskToDo","id = ?",new String[]{String.valueOf(task.getId())});
+            case "InProgress":
+                db.delete("TaskInProgress","id = ?",new String[]{String.valueOf(task.getId())});
+            case "Done":
+                db.delete("TaskDone","id = ?",new String[]{String.valueOf(task.getId())});
+        }
     }
 
     //endregion

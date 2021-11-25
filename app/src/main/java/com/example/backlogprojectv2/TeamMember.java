@@ -39,4 +39,8 @@ public class TeamMember {
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
+
+    public String getNameMember(){
+        return this.name + " " + this.firstname;
+    }
 }

@@ -48,7 +48,7 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
                     //personneAssigneTaskView.setText(string);
 
                     // OU
-                    personneAssigneTaskView.setText(task.getPersonneAssigne().getName() +" "+ task.getPersonneAssigne().getFirstname() +" "+  getContext().getString(R.string.inChargeLabel2));
+                    personneAssigneTaskView.setText(task.getPersonneAssigne().getNameMember() + " " +  getContext().getString(R.string.inChargeLabel2));
                 } else{
                     personneAssigneTaskView.setText(getContext().getString(R.string.nobodyInChargeLabel));
                 }
