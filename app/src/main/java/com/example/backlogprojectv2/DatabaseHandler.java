@@ -60,6 +60,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void cleanTable(){
+        db.delete("TaskToDo",null, null);
+        db.delete("TaskDone",null,null);
+        db.delete("TaskInProgress",null,null);
+        db.delete("TeamMembers",null,null);
+    }
     // Fin de section administration bdd
 
     /* Insertion dans les tables */
@@ -238,4 +244,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete("TeamMembers","id = ?",new String[]{String.valueOf(teamMember.getId())});
     }
     // Fin de changement d'état des tâches
+
+
 }

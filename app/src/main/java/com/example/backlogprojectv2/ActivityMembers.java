@@ -41,6 +41,7 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
     protected void  onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
+
         listView = findViewById(android.R.id.list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

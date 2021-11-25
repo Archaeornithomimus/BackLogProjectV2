@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.logs) {
         } else if (id == R.id.options) {
+            Intent intent = new Intent(this,DataBaseOption.class);
+            startActivity(intent);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
