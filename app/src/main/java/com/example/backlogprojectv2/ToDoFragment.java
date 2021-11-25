@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,6 @@ public class ToDoFragment extends Fragment {
 
         listView = (ListView)view.findViewById(R.id.listeTachesToDo);
         printListTask();
-
         return view;
     }
 
@@ -65,7 +66,7 @@ public class ToDoFragment extends Fragment {
         View mView = LayoutInflater.from(context).inflate(R.layout.dialog_task_modif, null);
 
         ArrayList<String> stateList = new ArrayList<>();
-        stateList.add("toDo");
+        stateList.add("ToDo");
         stateList.add("InProgress");
         stateList.add("Done");
 
@@ -90,11 +91,17 @@ public class ToDoFragment extends Fragment {
         priority.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
         description.setText(task.getDescription());
-        int index = teamMemberArrayList.lastIndexOf(task.getPersonneAssigne());
-        personInCharge.setSelection(index);
-        if (task.getPersonneAssigne()!=null) {
+        int index = 0;
 
+        if (task.getPersonneAssigne()!=null) {
+            for (TeamMember teamMember:teamMemberArrayList
+            ) {
+                if (teamMember.getId()== task.getPersonneAssigne().getId()){
+                    index = teamMemberArrayList.indexOf(teamMember);
+                }
+            }
         }
+        personInCharge.setSelection(index);
 
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
         Button btnCancel = (Button) mView.findViewById(R.id.cancelTaskModifButton);
@@ -110,7 +117,7 @@ public class ToDoFragment extends Fragment {
                     String nameNew = name.getText().toString();
                     String endDateNew  = endDate.getText().toString();
                     int poidNew = Integer.parseInt(priority.getText().toString());
-                    String stateNew = state.getPrompt().toString();
+                    String stateNew = state.getSelectedItem().toString();
                     String descriptionNew = description.getText().toString();
                     TeamMember personInChargeNew = (TeamMember) personInCharge.getSelectedItem();
                     Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew);
@@ -118,12 +125,11 @@ public class ToDoFragment extends Fragment {
                     taskArrayAdapter.remove(task);
                     taskArrayAdapter.add(newTask);
                     taskArrayAdapter.notifyDataSetChanged();
-
+                    printListTask();
                     alertDialog.dismiss();
                 } else{
                     Toast.makeText(context,"Il faut remplir les champs",Toast.LENGTH_SHORT);
                 }
-                Toast.makeText(context,"modification svg",Toast.LENGTH_LONG);
             }
         });
 
@@ -141,6 +147,8 @@ public class ToDoFragment extends Fragment {
         View mView = LayoutInflater.from(context).inflate(R.layout.dialog_task_description, null);
         TextView description = (TextView) mView.findViewById(R.id.textViewTaskDescription1);
         TextView etat = (TextView) mView.findViewById(R.id.textViewState);
+        FloatingActionButton deleteButton = mView.findViewById(R.id.floatingActionButtonDeleteTask);
+        deleteButton.setActivated(true);
         etat.setText(task.getEtat());
         description.setText(task.getDescription());
         Button btn_cancel = (Button) mView.findViewById(R.id.cancel_button);
@@ -151,6 +159,16 @@ public class ToDoFragment extends Fragment {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.deleteTask(task);
+                taskArray.remove(task);
+                taskArrayAdapter.notifyDataSetChanged();
                 alertDialog.dismiss();
             }
         });

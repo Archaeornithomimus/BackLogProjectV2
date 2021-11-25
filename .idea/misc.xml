@@ -12,7 +12,13 @@
         <entry key="..\:/Users/SESA592894/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/tasks_list.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/SESA592894/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/menu/activity_main_drawer.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/activity_members.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/dialog_custom_members.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/dialog_task_description.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/dialog_task_modif.xml" value="0.4" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/done_fragment.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/inprogress_fragment.xml" value="0.10364583333333334" />
         <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/nav_header_main.xml" value="0.12681159420289856" />
+        <entry key="..\:/Users/valen/AndroidStudioProjects/BackLogProjectV2/app/src/main/res/layout/team_member_list.xml" value="0.264" />
       </map>
     </option>
   </component>

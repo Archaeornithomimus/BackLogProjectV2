@@ -15,18 +15,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    DatabaseHandler db = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new DatabaseHandler(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,13 +101,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EditText priority = (EditText) mView.findViewById(R.id.editTextTaskPriority);
         EditText endDate = (EditText) mView.findViewById(R.id.editTextTaskEndDate);
         EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
-        Spinner etat = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+
+        ArrayList<String> stateList = new ArrayList<>();
+        stateList.add("ToDo");
+
+        Spinner state = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+
+        ArrayAdapter<String> adapterState = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,stateList);
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        state.setAdapter(adapterState);
+        state.setSelection(0);
+
         Spinner personInCharge = (Spinner) mView.findViewById(R.id.spinnerPersonInCharge);
+        ArrayList<TeamMember> teamMemberArrayList = db.getAllMembers();
+        ArrayAdapter<TeamMember> adapterPersonInCharge = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,teamMemberArrayList);
+        adapterPersonInCharge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        personInCharge.setAdapter(adapterPersonInCharge);
+
         name.clearComposingText();
         priority.clearComposingText();
         endDate.clearComposingText();
         description.clearComposingText();
-
 
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
         Button btnCancel = (Button) mView.findViewById(R.id.cancelTaskModifButton);
@@ -111,6 +132,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!name.getText().toString().isEmpty() && !priority.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
+
+                    String nameNew = name.getText().toString();
+                    String endDateNew  = endDate.getText().toString();
+                    int poidNew = Integer.parseInt(priority.getText().toString());
+                    String stateNew = state.getSelectedItem().toString();
+                    String descriptionNew = description.getText().toString();
+                    TeamMember personInChargeNew = (TeamMember) personInCharge.getSelectedItem();
+                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew);
+                    db.insertNewTask(newTask);
+                    FragmentManager monManager = getFragmentManager();
+                    FragmentTransaction transaction = monManager.beginTransaction();
+                    ToDoFragment toDoFragment = new ToDoFragment();
+                    transaction.replace(R.id.fragmentDynamic,toDoFragment).addToBackStack(null);
+                    transaction.commit();
+                    alertDialog.dismiss();
+                } else{
+                    Toast.makeText(getApplicationContext(),"Il faut remplir les champs",Toast.LENGTH_SHORT);
+                }
                 alertDialog.dismiss();
             }
         });
@@ -124,21 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu) ;
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();

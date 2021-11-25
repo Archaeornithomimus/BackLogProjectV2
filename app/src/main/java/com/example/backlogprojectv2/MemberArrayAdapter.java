@@ -26,15 +26,14 @@ public class MemberArrayAdapter extends ArrayAdapter<TeamMember> {
         TeamMember teamMember = getItem(position);
         if(teamMember != null){
             TextView nameTaskView = v.findViewById(R.id.name_team_member_view);
-            TextView poidTaskView = v.findViewById(R.id.first_name_team_member_view);
+            TextView fistNameView = v.findViewById(R.id.first_name_team_member_view);
 
             if(nameTaskView != null){
-                nameTaskView.setText(teamMember.getName()+" - n°"+teamMember.getId());
+                nameTaskView.setText(teamMember.getName());
             }
-            if(poidTaskView != null){
-                poidTaskView.setText(teamMember.getFirstname());
+            if(fistNameView != null){
+                fistNameView.setText(teamMember.getFirstname());
             }
-
         }
         return  v;
     }
