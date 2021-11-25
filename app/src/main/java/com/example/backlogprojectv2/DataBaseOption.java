@@ -55,7 +55,8 @@ public class DataBaseOption extends AppCompatActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.home) {
-
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.members) {
             Intent intent = new Intent(this,ActivityMembers.class);

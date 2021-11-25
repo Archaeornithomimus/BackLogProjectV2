@@ -4,6 +4,9 @@
     tools:showIn="navigation_view" >
     <group android:checkableBehavior= "single" >
         <item
+            android:id= "@+id/home"
+            android:title= "Backlog" />
+        <item
             android:id= "@+id/members"
             android:title= "Membres" />
 
