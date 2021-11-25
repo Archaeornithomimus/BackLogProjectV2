@@ -179,8 +179,6 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
         if (id == R.id.home) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
-        } else if (id == R.id.logs) {
-
         } else if (id == R.id.options) {
             Intent intent = new Intent(this,DataBaseOption.class);
             startActivity(intent);

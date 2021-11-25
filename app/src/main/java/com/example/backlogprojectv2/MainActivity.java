@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.members) {
             Intent intent = new Intent(this,ActivityMembers.class);
             startActivity(intent);
-        } else if (id == R.id.logs) {
         } else if (id == R.id.options) {
             Intent intent = new Intent(this,DataBaseOption.class);
             startActivity(intent);

@@ -62,10 +62,6 @@ public class DataBaseOption extends AppCompatActivity implements NavigationView.
             Intent intent = new Intent(this,ActivityMembers.class);
             startActivity(intent);
         }
-        else if (id == R.id.logs) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
