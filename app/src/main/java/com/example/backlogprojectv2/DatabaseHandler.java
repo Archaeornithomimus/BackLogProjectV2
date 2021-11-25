@@ -13,13 +13,12 @@ import java.util.ArrayList;
 public class DatabaseHandler extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
-
     public DatabaseHandler(Context context){
         super(context,"backlogprojectv2",null,12);
         this.db = getWritableDatabase();
     }
 
-    // Administration de la base de donnée
+    //region Administration de la base de donnée
     @Override
     public void onCreate(SQLiteDatabase db){
         this.db = db;
@@ -61,15 +60,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void cleanTable(){
-
         db.rawQuery("DELETE FROM TaskToDo;",null);
         db.rawQuery("DELETE FROM TaskDone;",null);
         db.rawQuery("DELETE FROM TaskInProgress;",null);
         db.rawQuery("DELETE FROM TeamMembers;",null);
     }
-    // Fin de section administration bdd
+    //endregion Fin de section administration bdd
 
-    /* Insertion dans les tables */
+    //region Insertion dans les tables
     public void insertNewTask(Task t){
         ContentValues values = new ContentValues();
         values.put("nom",t.getNom());
@@ -94,9 +92,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("prenom",teamMember.getFirstname());
         db.insert("TeamMembers",null,values);
     }
-    // Fin insertion
+    //endregion Fin insertion
 
-    // Affichage des tables
+    //region Affichage des tables
     public ArrayList<TeamMember> getAllMembers(){
         ArrayList<TeamMember> membersList = new ArrayList<TeamMember>();
         Cursor c = db.rawQuery("SELECT * FROM TeamMembers;",null);
@@ -107,7 +105,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         c.close();
         return membersList;
     }
-
     public TeamMember getUniqueTeamMember(Long id){
         TeamMember teamMember = null;
         // d parce qu'on sait pas si ça ne surcharge pas le curseur c
@@ -125,7 +122,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskInProgress;",null);
         while (c.moveToNext()){
-            //TeamMember teamMember = getUniqueTeamMember(c.getLong(3));
             Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
@@ -137,12 +133,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskToDo;",null);
         while (c.moveToNext()){
-            long id = c.getLong(3);
-            String nameTask = c.getString(1);
-            long idTask = c.getLong(0);
-
-            TeamMember teamMember = getUniqueTeamMember(id);
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),teamMember,c.getString(4),c.getString(5),c.getString(6));
+            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
         c.close();
@@ -153,15 +144,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Task> taches = new ArrayList<Task>();
         Cursor c = db.rawQuery("SELECT * FROM TaskDone;",null);
         while (c.moveToNext()){
-            TeamMember teamMember = getUniqueTeamMember(c.getLong(3));
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),teamMember,c.getString(4),c.getString(5),c.getString(6));
+            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
             taches.add(task);
         }
         c.close();
         return taches;
     }
+    //endregion
 
-    // Changement d'état des taches
+    //region Changement d'état des taches
 
     public void passTaskToInProgress(Task taskToSwitch){
         ContentValues values = new ContentValues();
@@ -240,11 +231,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 // already in ToDo Table
         }
     }
+    //endregion
 
+    //region Suppression d'entrée dans les tables
     public void deleteMember(TeamMember teamMember){
         db.delete("TeamMembers","id = ?",new String[]{String.valueOf(teamMember.getId())});
     }
-    // Fin de changement d'état des tâches
+
+    //endregion
 
 
 }

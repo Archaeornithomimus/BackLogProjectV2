@@ -73,13 +73,16 @@ public class ToDoFragment extends Fragment {
         EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
 
         Spinner etat = (Spinner) mView.findViewById(R.id.spinnerTaskState);
+
         Spinner personInCharge = (Spinner) mView.findViewById(R.id.spinnerPersonInCharge);
 
         name.setText(task.getNom());
         priority.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
         etat.setPrompt(task.getEtat());
-        personInCharge.setPrompt(task.getPersonneAssigne().getName());
+        if (task.getPersonneAssigne()!=null) {
+            //personInCharge.task.getPersonneAssigne().getName());
+        }
 
         description.setText(task.getDescription());
         Button btnValidate = (Button) mView.findViewById(R.id.validateTasklModifButton);
