@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,11);
+        super(context,"backlogprojectv2",null,12);
         this.db = getWritableDatabase();
     }
 
@@ -61,10 +61,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void cleanTable(){
-        db.delete("TaskToDo",null, null);
-        db.delete("TaskDone",null,null);
-        db.delete("TaskInProgress",null,null);
-        db.delete("TeamMembers",null,null);
+
+        db.rawQuery("DELETE FROM TaskToDo;",null);
+        db.rawQuery("DELETE FROM TaskDone;",null);
+        db.rawQuery("DELETE FROM TaskInProgress;",null);
+        db.rawQuery("DELETE FROM TeamMembers;",null);
     }
     // Fin de section administration bdd
 

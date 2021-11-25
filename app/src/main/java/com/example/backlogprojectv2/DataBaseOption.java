@@ -16,14 +16,17 @@ public class DataBaseOption extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_base_option);
-
+        db = new DatabaseHandler(this);
         Button clickButtonResetApp = findViewById(R.id.buttonResetApp);
+
         clickButtonResetApp.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+
                 db.cleanTable();
             }
         });
