@@ -177,6 +177,7 @@ public class ActivityMembers extends AppCompatActivity implements NavigationView
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.home) {
+
         } else if (id == R.id.logs) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
