@@ -40,7 +40,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutTaskPriority"
+        android:id="@+id/layoutTaskPoid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/textViewPersonInCharge"
@@ -49,22 +49,22 @@
         >
 
         <TextView
-            android:id="@+id/textViewTaskPriority"
+            android:id="@+id/textViewTaskPoid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Priorité : "
+            android:text="Poid  : "
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <EditText
-            android:id="@+id/editTextTaskPriority"
+            android:id="@+id/editTextTaskPoid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/textViewTaskPriority"/>
+            app:layout_constraintLeft_toRightOf="@+id/textViewTaskPoid"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,14 +75,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Etat : "
-        app:layout_constraintTop_toBottomOf="@id/layoutTaskPriority"
+        app:layout_constraintTop_toBottomOf="@id/layoutTaskPoid"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <Spinner
         android:id="@+id/spinnerTaskState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/layoutTaskPriority"
+        app:layout_constraintTop_toBottomOf="@+id/layoutTaskPoid"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/textViewTaskState"/>
 
@@ -115,36 +115,59 @@
 
     <EditText
         android:id="@+id/editTextDescription"
-        android:layout_width="274dp"
-        android:layout_height="137dp"
+        android:layout_width="269dp"
+        android:layout_height="71dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTaskDescription"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTaskDescription" />
 
     <Button
         android:id="@+id/validateTasklModifButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
         android:text="Validate"
         app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/cancelTaskModifButton"/>
+        app:layout_constraintRight_toLeftOf="@+id/cancelTaskModifButton"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPriority" />
 
     <Button
         android:id="@+id/cancelTaskModifButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
         android:text="Cancel"
         app:layout_constraintHorizontal_bias="0.757"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintLeft_toRightOf="@id/validateTasklModifButton"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/validateTasklModifButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewPriority" />
+
+    <TextView
+        android:id="@+id/textViewPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Priorité :"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerPriority"
+        app:layout_constraintHorizontal_bias="0.756"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/spinnerPriority"
+        android:layout_width="192dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintVertical_bias="0.065" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

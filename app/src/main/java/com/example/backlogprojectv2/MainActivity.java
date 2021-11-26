@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout) ;
@@ -98,15 +99,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View mView = LayoutInflater.from(this).inflate(R.layout.dialog_task_modif, null);
 
         EditText name = (EditText) mView.findViewById(R.id.editTextTaskName);
-        EditText priority = (EditText) mView.findViewById(R.id.editTextTaskPriority);
+        EditText poid = (EditText) mView.findViewById(R.id.editTextTaskPoid);
         EditText endDate = (EditText) mView.findViewById(R.id.editTextTaskEndDate);
         EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
 
+        ArrayList<String> priorityList = new ArrayList<>();
+        priorityList.add("Could");
+        priorityList.add("Can");
+        priorityList.add("Should");
+        Spinner priority = (Spinner) mView.findViewById(R.id.spinnerPriority);
+        ArrayAdapter<String> adapterPriority = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,priorityList);
+        adapterPriority.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        priority.setAdapter(adapterPriority);
+
         ArrayList<String> stateList = new ArrayList<>();
         stateList.add("ToDo");
-
         Spinner state = (Spinner) mView.findViewById(R.id.spinnerTaskState);
-
         ArrayAdapter<String> adapterState = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,stateList);
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state.setAdapter(adapterState);
@@ -118,8 +126,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapterPersonInCharge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         personInCharge.setAdapter(adapterPersonInCharge);
 
+        // clean des Edit Text
         name.clearComposingText();
-        priority.clearComposingText();
+        poid.clearComposingText();
         endDate.clearComposingText();
         description.clearComposingText();
 
@@ -132,15 +141,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!name.getText().toString().isEmpty() && !priority.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
+                if(!name.getText().toString().isEmpty() && !poid.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
 
                     String nameNew = name.getText().toString();
                     String endDateNew  = endDate.getText().toString();
-                    int poidNew = Integer.parseInt(priority.getText().toString());
+                    int poidNew = Integer.parseInt(poid.getText().toString());
                     String stateNew = state.getSelectedItem().toString();
                     String descriptionNew = description.getText().toString();
                     TeamMember personInChargeNew = (TeamMember) personInCharge.getSelectedItem();
-                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew);
+                    String priorityNew = (String)priority.getSelectedItem();
+
+                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew,priorityNew);
                     db.insertNewTask(newTask);
                     FragmentManager monManager = getFragmentManager();
                     FragmentTransaction transaction = monManager.beginTransaction();

@@ -35,19 +35,14 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
             TextView personneAssigneTaskView = v.findViewById(R.id.personneAssigneTaskView);
             TextView dateDeFinTaskView = v.findViewById(R.id.dateDeFinTaskView);
 
-
             if(nameTaskView != null){
-                nameTaskView.setText(task.getNom()+" - n°"+task.getId());
+                nameTaskView.setText(task.getNom()+" - tâche n°"+task.getId());
             }
             if(poidTaskView != null){
-                poidTaskView.setText(getContext().getString(R.string.priorityNumberLabel) +task.getPoid());
+                poidTaskView.setText(getContext().getString(R.string.poidNumberLabel) +task.getPoid());
             }
             if(personneAssigneTaskView != null){
                 if (task.getPersonneAssigne() != null) {
-                    //String string = getContext().getString(R.string.inChargeLabel) + task.getPersonneAssigne();
-                    //personneAssigneTaskView.setText(string);
-
-                    // OU
                     personneAssigneTaskView.setText(task.getPersonneAssigne().getNameMember() + " " +  getContext().getString(R.string.inChargeLabel2));
                 } else{
                     personneAssigneTaskView.setText(getContext().getString(R.string.nobodyInChargeLabel));

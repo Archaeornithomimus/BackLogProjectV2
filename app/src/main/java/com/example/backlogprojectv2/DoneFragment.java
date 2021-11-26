@@ -3,7 +3,6 @@ package com.example.backlogprojectv2;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,21 +26,46 @@ public class DoneFragment extends Fragment {
     ArrayList<Task> taskArray;
     ListView listView;
     private Context context;
+    Spinner agilePrioritySpinner;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
         View view = inflater.inflate(R.layout.done_fragment, container, false);
+
+        agilePrioritySpinner = (Spinner) view.findViewById(R.id.spinnerTri);
+        ArrayList<String> prioriteAgileSpinnerList = new ArrayList<>();
+        prioriteAgileSpinnerList.add("None");
+        prioriteAgileSpinnerList.add("Could");
+        prioriteAgileSpinnerList.add("Can");
+        prioriteAgileSpinnerList.add("Should");
+
+        ArrayAdapter<String> adapterAgilePriority= new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,prioriteAgileSpinnerList);
+        adapterAgilePriority.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        agilePrioritySpinner.setAdapter(adapterAgilePriority);
+        agilePrioritySpinner.setSelection(0);
+
+        agilePrioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                printListTask(parent.getItemAtPosition(pos).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         context = getActivity();
         db = new DatabaseHandler(context);
 
         listView = view.findViewById(R.id.listeTachesDone);
-        printListTask();
+        printListTask("None");
         //listView.setOnItemClickListener(this);
         return view;
     }
 
-    public void printListTask(){
-        taskArray = db.getAllDoneTask();
+    public void printListTask(String filter){
+        taskArray = db.getAllDoneTask(filter);
         taskArrayAdapter = new TaskArrayAdapter(getActivity(), R.layout.tasks_list, taskArray);
         listView.setAdapter(taskArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,8 +95,13 @@ public class DoneFragment extends Fragment {
         stateList.add("InProgress");
         stateList.add("Done");
 
+        ArrayList<String> priorityList = new ArrayList<>();
+        priorityList.add("Could");
+        priorityList.add("Can");
+        priorityList.add("Should");
+
         EditText name = (EditText) mView.findViewById(R.id.editTextTaskName);
-        EditText priority = (EditText) mView.findViewById(R.id.editTextTaskPriority);
+        EditText poid = (EditText) mView.findViewById(R.id.editTextTaskPoid);
         EditText endDate = (EditText) mView.findViewById(R.id.editTextTaskEndDate);
         EditText description = (EditText) mView.findViewById(R.id.editTextDescription);
 
@@ -82,6 +111,19 @@ public class DoneFragment extends Fragment {
         state.setAdapter(adapterState);
         state.setSelection(2);
 
+        Spinner priority = (Spinner) mView.findViewById(R.id.spinnerPriority);
+        ArrayAdapter<String> adapterPriority = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,priorityList);
+        adapterPriority.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        priority.setAdapter(adapterPriority);
+        if(task.getPriority().equals("Could")){
+            priority.setSelection(0);
+        } else if (task.getPriority().equals("Can")){
+            priority.setSelection(1);
+        }
+        else if (task.getPriority().equals("Should")){
+            priority.setSelection(2);
+        }
+
         Spinner personInCharge = (Spinner) mView.findViewById(R.id.spinnerPersonInCharge);
         ArrayList<TeamMember> teamMemberArrayList = db.getAllMembers();
         ArrayAdapter<TeamMember> adapterPersonInCharge = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item,teamMemberArrayList);
@@ -89,7 +131,7 @@ public class DoneFragment extends Fragment {
         personInCharge.setAdapter(adapterPersonInCharge);
 
         name.setText(task.getNom());
-        priority.setText(Integer.toString(task.getPoid()));
+        poid.setText(Integer.toString(task.getPoid()));
         endDate.setText(task.getDateDeFin());
         description.setText(task.getDescription());
         int index = 0;
@@ -113,20 +155,22 @@ public class DoneFragment extends Fragment {
         btnValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!name.getText().toString().isEmpty() && !priority.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
+                if(!name.getText().toString().isEmpty() && !poid.getText().toString().isEmpty() && !endDate.getText().toString().isEmpty()){
 
                     String nameNew = name.getText().toString();
                     String endDateNew  = endDate.getText().toString();
-                    int poidNew = Integer.parseInt(priority.getText().toString());
+                    int poidNew = Integer.parseInt(poid.getText().toString());
                     String stateNew = state.getSelectedItem().toString();
                     String descriptionNew = description.getText().toString();
                     TeamMember personInChargeNew = (TeamMember) personInCharge.getSelectedItem();
-                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew);
+                    String priorityNew = (String)priority.getSelectedItem();
+                    Task newTask = new Task(nameNew,poidNew,(TeamMember)personInChargeNew, stateNew,endDateNew,descriptionNew,priorityNew);
                     db.updateTask(task,newTask);
                     taskArrayAdapter.remove(task);
                     taskArrayAdapter.add(newTask);
                     taskArrayAdapter.notifyDataSetChanged();
-                    printListTask();
+                    agilePrioritySpinner.setSelection(0);
+                    printListTask("None");
                     alertDialog.dismiss();
                 } else{
                     Toast.makeText(context,"Il faut remplir les champs",Toast.LENGTH_SHORT);

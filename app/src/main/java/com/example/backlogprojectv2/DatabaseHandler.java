@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     SQLiteDatabase db;
 
     public DatabaseHandler(Context context){
-        super(context,"backlogprojectv2",null,9);
+        super(context,"backlogprojectv2",null,1);
         this.db = getWritableDatabase();
     }
 
@@ -22,27 +22,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         this.db = db;
-        db.execSQL("CREATE TABLE TaskToDo (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
-        db.execSQL("CREATE TABLE TaskDone (id INTEGER PRIMARY KEY UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
-        db.execSQL("CREATE TABLE TaskInProgress (id INTEGER PRIMARY KEY UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT);");
+        db.execSQL("CREATE TABLE TaskToDo (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT,priority TEXT);");
+        db.execSQL("CREATE TABLE TaskDone (id INTEGER PRIMARY KEY UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT,priority TEXT);");
+        db.execSQL("CREATE TABLE TaskInProgress (id INTEGER PRIMARY KEY UNIQUE, nom TEXT, poid INTEGER, personneAssigne TEXT, etat TEXT, dateDeFin TEXT, description TEXT,priority TEXT);");
         db.execSQL("CREATE TABLE TeamMembers (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, prenom TEXT, nom TEXT);");
 
 
         // donnée test
-        TeamMember alice = new TeamMember("tamere","Alice");
-        TeamMember bob = new TeamMember("tamere","Bob");
+        TeamMember alice = new TeamMember("Menage","Valentin");
+        TeamMember bob = new TeamMember("Mausion","Nathan");
         insertNewTeamMember(alice);
         insertNewTeamMember(bob);
 
-        Task task1 = new Task("Lancement",12,getUniqueTeamMember((long)1),"ToDo","31/11/2021","c'est quand tu lance le projet");
-        Task task2 = new Task("Dev",1,getUniqueTeamMember((long)2),"ToDo","31/09/2021","c'est quand tu écris le code");
-        //Task task3 = new Task("Dev",1,getUniqueTeamMember((long)2),"InProgress","31/09/2021","c'est quand tu écris le code");
+        Task task1 = new Task("Lancement",12,getUniqueTeamMember((long)1),"ToDo","31/11/2021","c'est quand tu lance le projet","Can");
+        Task task2 = new Task("Dev",1,getUniqueTeamMember((long)2),"ToDo","31/09/2021","c'est quand tu écris le code","Should");
         insertNewTask(task1);
         insertNewTask(task2);
-        //insertNewTask(task3);
-        //Task task3 = new Task(3,"Dev","ToDo","31/09","Roger",2,"toot");
-        //insertNewTask(task3);
-        //passTaskToInProgress(task3);
     }
 
     public void close(){
@@ -78,6 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("etat","ToDo");
         values.put("dateDeFin",t.getDateDeFin());
         values.put("description",t.getDescription());
+        values.put("priority",t.getPriority());
         db.insert("TaskToDo",null,values);
     }
 
@@ -101,15 +97,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return membersList;
     }
 
-    /*public ArrayList<String> getAllMembersName(){
-        ArrayList<String> teamMemberName = new ArrayList<>();
-        for (TeamMember teamMember:this.getAllMembers()
-        ) {
-            teamMemberName.add(teamMember.getName() + " " + teamMember.getFirstname());
-        }
-        return teamMemberName;
-    }*/
-
     public TeamMember getUniqueTeamMember(Long id){
         TeamMember teamMember = null;
         // d parce qu'on sait pas si ça ne surcharge pas le curseur c
@@ -122,37 +109,116 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return teamMember;
     }
 
-    public ArrayList<Task> getAllInProgressTask(){
+    public ArrayList<Task> getAllInProgressTask(String filter){
         ArrayList<Task> taches = new ArrayList<Task>();
-        Cursor c = db.rawQuery("SELECT * FROM TaskInProgress;",null);
-        while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
-            taches.add(task);
+        if(filter.equals("Should")) {
+            Cursor c = db.rawQuery("SELECT * FROM TaskInProgress WHERE priority='Should';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Can")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskInProgress WHERE priority='Can';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Could")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskInProgress WHERE priority='Could';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else {
+            Cursor c = db.rawQuery("SELECT * FROM TaskInProgress;", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6),c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
         }
-        c.close();
-        return taches;
     }
 
-    public ArrayList<Task> getAllToDoTask(){
+    public ArrayList<Task> getAllToDoTask(String filter){
         ArrayList<Task> taches = new ArrayList<Task>();
-        Cursor c = db.rawQuery("SELECT * FROM TaskToDo;",null);
-        while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
-            taches.add(task);
+        if(filter.equals("Should")) {
+            Cursor c = db.rawQuery("SELECT * FROM TaskToDo WHERE priority='Should';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Can")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskToDo WHERE priority='Can';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Could")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskToDo WHERE priority='Could';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else {
+            Cursor c = db.rawQuery("SELECT * FROM TaskToDo;", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6),c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
         }
-        c.close();
-        return taches;
     }
 
-    public ArrayList<Task> getAllDoneTask(){
+    public ArrayList<Task> getAllDoneTask(String filter){
         ArrayList<Task> taches = new ArrayList<Task>();
-        Cursor c = db.rawQuery("SELECT * FROM TaskDone;",null);
-        while (c.moveToNext()){
-            Task task = new Task(c.getLong(0),c.getString(1),c.getInt(2),getUniqueTeamMember(c.getLong(3)),c.getString(4),c.getString(5),c.getString(6));
-            taches.add(task);
+
+        if(filter.equals("Should")) {
+            Cursor c = db.rawQuery("SELECT * FROM TaskDone WHERE priority='Should';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Can")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskDone WHERE priority='Can';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else if(filter.equals("Could")){
+            Cursor c = db.rawQuery("SELECT * FROM TaskDone WHERE priority='Could';", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6), c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
+        } else {
+            Cursor c = db.rawQuery("SELECT * FROM TaskDone;", null);
+            while (c.moveToNext()) {
+                Task task = new Task(c.getLong(0), c.getString(1), c.getInt(2), getUniqueTeamMember(c.getLong(3)), c.getString(4), c.getString(5), c.getString(6),c.getString(7));
+                taches.add(task);
+            }
+            c.close();
+            return taches;
         }
-        c.close();
-        return taches;
     }
     //endregion
 
@@ -165,6 +231,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("etat",newTask.getEtat());
         values.put("dateDeFin",newTask.getDateDeFin());
         values.put("description",newTask.getDescription());
+        values.put("priority", newTask.getPriority());
         if(!newTask.getEtat().equals(oldTask.getEtat())){
             if(newTask.getEtat().equals("ToDo")){
                 passTaskToDo(oldTask,values);
@@ -187,42 +254,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //region Changement d'état des taches
 
     public void passTaskInProgress(Task taskToSwitch,ContentValues nvValues){
-        switch (taskToSwitch.getEtat()){
-            case "ToDo":
-                db.delete("TaskToDo","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
-                db.insert("TaskInProgress",null,nvValues);
-            case "Done":
-                db.delete("TaskDone","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
-                db.insert("TaskInProgress",null,nvValues);
-            default:
-                // already in InProgress Table
+        if(taskToSwitch.getEtat().equals("ToDo")) {
+            db.delete("TaskToDo", "id = ?", new String[]{String.valueOf(taskToSwitch.getId())});
+            db.insert("TaskInProgress", null, nvValues);
+        }else if (taskToSwitch.getEtat().equals("Done")) {
+            db.delete("TaskDone", "id = ?", new String[]{String.valueOf(taskToSwitch.getId())});
+            db.insert("TaskInProgress", null, nvValues);
         }
     }
 
     public void passTaskDone(Task taskToSwitch,ContentValues nvValues){
-        switch (taskToSwitch.getEtat()){
-            case "ToDo":
-                db.delete("TaskToDo","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
-                db.insert("TaskDone",null,nvValues);
-            case "InProgress":
+        if(taskToSwitch.getEtat().equals("ToDo")) {
+            db.delete("TaskToDo", "id = ?", new String[]{String.valueOf(taskToSwitch.getId())});
+            db.insert("TaskDone", null, nvValues);
+        }else if (taskToSwitch.getEtat().equals("Done")) {
                 db.delete("TaskInProgress","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
                 db.insert("TaskDone",null,nvValues);
-            default:
-                // already in Done Table
         }
     }
 
     public void passTaskToDo(Task taskToSwitch,ContentValues nvValues){
 
-        switch (taskToSwitch.getEtat()){
-            case "Done":
-                db.delete("TaskDone","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
-                db.insert("TaskToDo",null,nvValues);
-            case "InProgress":
+        if(taskToSwitch.getEtat().equals("ToDo")) {
+            db.delete("TaskDone", "id = ?", new String[]{String.valueOf(taskToSwitch.getId())});
+            db.insert("TaskToDo", null, nvValues);
+        }else if (taskToSwitch.getEtat().equals("Done")) {
                 db.delete("TaskInProgress","id = ?",new String[]{String.valueOf(taskToSwitch.getId())});
                 db.insert("TaskToDo",null,nvValues);
-            default:
-                // already in ToDo Table
         }
     }
     //endregion
